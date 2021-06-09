@@ -1,10 +1,12 @@
 package com.otaliastudios.cameraview.engine;
 
 import android.location.Location;
+import android.os.Build;
 
 import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.annotation.VisibleForTesting;
 
 import com.google.android.gms.tasks.Task;
@@ -33,6 +35,8 @@ import com.otaliastudios.cameraview.size.AspectRatio;
 import com.otaliastudios.cameraview.size.Size;
 import com.otaliastudios.cameraview.size.SizeSelector;
 import com.otaliastudios.cameraview.size.SizeSelectors;
+import com.otaliastudios.cameraview.video.Full2VideoRecorder;
+import com.otaliastudios.cameraview.video.FullVideoRecorder;
 import com.otaliastudios.cameraview.video.VideoRecorder;
 
 import java.io.File;
@@ -656,6 +660,20 @@ public abstract class CameraBaseEngine extends CameraEngine {
             // Do not null this, so we respond correctly to isTakingVideo(),
             // which checks for recorder presence and recorder.isRecording().
             // It will be nulled in onVideoResult.
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void pause() {
+        if (mVideoRecorder instanceof FullVideoRecorder) {
+            ((FullVideoRecorder) mVideoRecorder).pause();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void resume() {
+        if (mVideoRecorder instanceof FullVideoRecorder) {
+            ((FullVideoRecorder) mVideoRecorder).resume();
         }
     }
 

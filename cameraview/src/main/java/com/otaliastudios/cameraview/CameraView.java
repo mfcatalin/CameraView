@@ -26,6 +26,7 @@ import android.widget.FrameLayout;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.annotation.VisibleForTesting;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleObserver;
@@ -48,6 +49,7 @@ import com.otaliastudios.cameraview.controls.VideoCodec;
 import com.otaliastudios.cameraview.controls.WhiteBalance;
 import com.otaliastudios.cameraview.engine.Camera1Engine;
 import com.otaliastudios.cameraview.engine.Camera2Engine;
+import com.otaliastudios.cameraview.engine.CameraBaseEngine;
 import com.otaliastudios.cameraview.engine.CameraEngine;
 import com.otaliastudios.cameraview.engine.offset.Reference;
 import com.otaliastudios.cameraview.engine.orchestrator.CameraState;
@@ -1887,8 +1889,6 @@ public class CameraView extends FrameLayout implements LifecycleObserver {
         takeVideoSnapshot(file);
     }
 
-    // TODO: pauseVideo and resumeVideo? There is mediarecorder.pause(), but API 24...
-
     /**
      * Stops capturing video or video snapshots being recorded, if there was any.
      * This will fire {@link CameraListener#onVideoTaken(VideoResult)}.
@@ -1901,6 +1901,20 @@ public class CameraView extends FrameLayout implements LifecycleObserver {
                 if (getKeepScreenOn() != mKeepScreenOn) setKeepScreenOn(mKeepScreenOn);
             }
         });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void pause() {
+        if (mCameraEngine instanceof CameraBaseEngine) {
+            ((CameraBaseEngine) mCameraEngine).pause();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void resume() {
+        if (mCameraEngine instanceof CameraBaseEngine) {
+            ((CameraBaseEngine) mCameraEngine).resume();
+        }
     }
 
     /**

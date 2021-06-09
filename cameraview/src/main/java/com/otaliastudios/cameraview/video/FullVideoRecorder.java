@@ -359,4 +359,13 @@ public abstract class FullVideoRecorder extends VideoRecorder {
         dispatchResult();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void pause() {
+        mMediaRecorder.pause();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void resume() {
+        mMediaRecorder.resume();
+    }
 }
